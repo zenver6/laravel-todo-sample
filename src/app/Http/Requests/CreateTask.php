@@ -42,6 +42,7 @@ class CreateTask extends FormRequest
         return [
             'title.required' => ':attribute は必須です',
             'due_date.required' => ':attribute は必須です',
+            'due_date.date' => ':attribute には日付を入力してください',
             'due_date.after_or_equal' => ':attribute には今日以降の日付を入力してください'
         ];
     }

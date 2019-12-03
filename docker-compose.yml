@@ -57,12 +57,15 @@ services:
       - ${DB_PORT}:3306
 
   db-testing:
-    image: mysql:8.0
+    build:
+      context: ./docker/mysql/testing
     volumes:
       - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
-    tmpfs:
-      - /var/lib/mysql
-      - /var/log/mysql
+      - ./docker/mysql/testing/lib/mysql:/var/lib/mysql
+      - ./docker/mysql/testing/log/mysql:/var/log/mysql
+    # tmpfs:
+    #   - /var/lib/mysql
+    #   - /var/log/mysql
     environment:
       - MYSQL_DATABASE=${DB_NAME}
       - MYSQL_USER=${DB_USER}
