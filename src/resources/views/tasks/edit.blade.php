@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layouts.app')
 
 @section('styles')
 @include('share.flatpicker.styles')
@@ -18,7 +18,7 @@
                         @endforeach
                     </div>
                     @endif
-                    <form action="{{ route('tasks.edit', ['id' => $task->folder_id, 'task_id' => $task->task_id]) }}" method="POST">
+                    <form action="{{ route('tasks.edit', ['folder' => $task->folder_id, 'task' => $task->task_id]) }}" method="POST">
                         @csrf
                         <div class="form-group">
                             <label for="title">タイトル</label>
