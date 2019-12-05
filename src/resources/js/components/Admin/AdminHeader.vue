@@ -31,26 +31,21 @@
             ></v-app-bar-nav-icon>
             <v-toolbar-title>サンプル管理画面</v-toolbar-title>
             <v-spacer></v-spacer>
-            管理者名
-            <v-btn
-                icon
-                onclick="event.preventDefault();
-                         document.getElementById('logout-form').submit();"
-                class="ml-2"
-            >
+            {{ name }}
+            <v-btn icon @click="axiosLogout()" class="ml-2">
                 <v-icon>exit_to_app</v-icon>
                 <v-tooltip left>
                     <span>ログアウト</span>
                 </v-tooltip>
             </v-btn>
-            <form
+            <!-- <form
                 id="logout-form"
                 action="/logout"
                 method="POST"
                 style="display: none;"
             >
-                @csrf
-            </form>
+                {{@csrf}}
+            </form> -->
         </v-app-bar>
     </div>
 </template>
@@ -60,8 +55,8 @@ export default {
     name: "AdminHeader",
 
     props: {
-        name: String
-        // logout: String
+        name: String,
+        logout: String
     },
 
     data: () => ({
@@ -84,10 +79,30 @@ export default {
     },
 
     methods: {
-        logout() {
-            console.log(this);
-
-            // document.getElementById("logout-form").submit();
+        axiosLogout() {
+            axios
+                .post(this.logout)
+                .then(
+                    function(response) {
+                        console.log(response);
+                    }.bind(this)
+                )
+                .catch(
+                    function(error) {
+                        console.log(error);
+                        if (error.response) {
+                            if (error.response.status) {
+                                if (
+                                    error.response.status == 401 ||
+                                    error.response.status == 419
+                                ) {
+                                    var parser = new URL(this.logout);
+                                    location.href = parser.origin;
+                                }
+                            }
+                        }
+                    }.bind(this)
+                );
         }
     }
 };

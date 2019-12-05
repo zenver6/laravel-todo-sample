@@ -1916,16 +1916,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "AdminHeader",
   props: {
-    name: String // logout: String
-
+    name: String,
+    logout: String
   },
   data: function data() {
     return {
@@ -1953,8 +1948,21 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    logout: function logout() {
-      console.log(this); // document.getElementById("logout-form").submit();
+    axiosLogout: function axiosLogout() {
+      axios.post(this.logout).then(function (response) {
+        console.log(response);
+      }.bind(this))["catch"](function (error) {
+        console.log(error);
+
+        if (error.response) {
+          if (error.response.status) {
+            if (error.response.status == 401 || error.response.status == 419) {
+              var parser = new URL(this.logout);
+              location.href = parser.origin;
+            }
+          }
+        }
+      }.bind(this));
     }
   }
 });
@@ -38355,15 +38363,16 @@ var render = function() {
           _c("v-toolbar-title", [_vm._v("サンプル管理画面")]),
           _vm._v(" "),
           _c("v-spacer"),
-          _vm._v("\n        管理者名\n        "),
+          _vm._v("\n        " + _vm._s(_vm.name) + "\n        "),
           _c(
             "v-btn",
             {
               staticClass: "ml-2",
-              attrs: {
-                icon: "",
-                onclick:
-                  "event.preventDefault();\n                     document.getElementById('logout-form').submit();"
+              attrs: { icon: "" },
+              on: {
+                click: function($event) {
+                  return _vm.axiosLogout()
+                }
               }
             },
             [
@@ -38374,15 +38383,6 @@ var render = function() {
               ])
             ],
             1
-          ),
-          _vm._v(" "),
-          _c(
-            "form",
-            {
-              staticStyle: { display: "none" },
-              attrs: { id: "logout-form", action: "/logout", method: "POST" }
-            },
-            [_vm._v("\n            @csrf\n        ")]
           )
         ],
         1

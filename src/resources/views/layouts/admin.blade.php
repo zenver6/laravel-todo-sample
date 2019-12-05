@@ -28,7 +28,9 @@
 <body>
     <div id="app">
         <v-app>
-            <admin-header></admin-header>
+            @if ( Auth::guard('admin')->check() )
+            <admin-header name="{{ Auth::user()->name }}" logout="{{ route('admin.logout') }}"></admin-header>
+            @endif
 
             <v-content class="mt-12 pt-12">
                 <v-container fluid>
