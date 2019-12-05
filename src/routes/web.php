@@ -21,7 +21,6 @@
 
 
 Route::group(['namespace' => 'Admin', 'domain' => 'admin.localhost'], function () {
-    // Route::group(['domain' => 'admin.localhost'], function () {
     Route::get('/', 'HomeController@index')->name('admin.home');
     Route::get('/login', 'Auth\LoginController@showLoginForm')->name('admin.login');
     Route::post('/login', 'Auth\LoginController@login');
@@ -30,6 +29,9 @@ Route::group(['namespace' => 'Admin', 'domain' => 'admin.localhost'], function (
     Route::group(['middleware' => 'auth:admin'], function () {
         Route::post('/logout', 'Auth\LoginController@logout')->name('admin.logout');
         Route::get('/user', 'UserController@index')->name('admin.users');
+        // Route::get('/news', 'NewsController@index')->name('admin.news');
+        // Route::get('/news/create', 'NewsController@showCreateForm')->name('admin.news.create');
+        // Route::post('/news/create', 'NewsController@create');
     });
 });
 
